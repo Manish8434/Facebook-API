@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="https://code.jquery.com/jquery-latest.min.js"></script>
+  <link rel="stylesheet" href="./css/search.css">
+</head>
+<body>
+  <div style="text-align: center;">
+    <h1>Using Graph API to get Facebook Likes Count</h1>
+   <div id="myOverlay" class="overlay">
+    <span class="closebtn" onclick="closeSearch()" title="Close Overlay">×</span>
+    <div class="overlay-content">
+      <form action="/">
+        <input type="text" class="url" placeholder="Enter URL" name="search">
+        <button type="button" onclick="getShareCount();"><i class="fa fa-search"></i></button>
+      </form>
+    </div>
+  </div>
+  <h2>Check Likes Count</h2>
+  <button class="openBtn" onclick="openSearch()">CHECK NOW</button>
+  <div class="result"></div>
+  <script>
+  function openSearch() {
+    document.getElementById("myOverlay").style.display = "block";
+  }
+  function closeSearch() {
+    document.getElementById("myOverlay").style.display = "none";
+  }
+  function getShareCount(){
+    url = $(".url").val();
+    api_url = 'https://graph.facebook.com/v3.0/?id='+url+'&fields=og_object{engagement}&access_token=2090463021032113|ca2390d9117fdfba4d915c00649e401f';
+    $.ajax({
+      url:api_url,
+      type:'get',
+      success:function(res){
+        count = res.og_object.engagement.count;
+        text = res.og_object.engagement.social_sentence;
+        $(".result").html('<h3>'+count+' Shares<br>'+text+'</h3>');
+        closeSearch();
+      }
+    });
+  }
+  </script>
+</div>
+</body>
+</html>
